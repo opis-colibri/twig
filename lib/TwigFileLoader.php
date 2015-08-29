@@ -18,7 +18,7 @@
  * limitations under the License.
  * ============================================================================ */
 
-namespace Opis\Colibri\Module\Welcome;
+namespace Opis\Colibri\Module\Twig;
 
 use Opis\Colibri\App;
 use Twig_LoaderInterface;
