@@ -23,18 +23,7 @@ namespace Opis\Colibri\ModuleInstaller;
 use Opis\Colibri\ModuleInstaller;
 
 class Twig extends ModuleInstaller
-{
-    public function install()
-    {
-        $dir = COLIBRI_STORAGES_PATH . '/twig';
-        
-        if(!file_exists($dir) || !is_dir($dir))
-        {
-            mkdir($dir);
-        }
-        
-    }
-    
+{    
     public function uninstall()
     {
         $rmdir = function($path) use(&$rmdir){
