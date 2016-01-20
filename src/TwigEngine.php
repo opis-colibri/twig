@@ -21,16 +21,17 @@
 namespace Opis\Colibri\Module\Twig;
 
 use Twig_Environment;
+use Opis\Colibri\Application;
 use Opis\View\EngineInterface;
 
 class TwigEngine implements EngineInterface
 {
     protected $twig;
-    
-    public function __construct()
+
+    public function __construct(Application $app)
     {
-        $this->twig = new Twig_Environment(new TwigFileLoader(), array(
-            'cache' => COLIBRI_STORAGES_PATH . '/twig',
+        $this->twig = new Twig_Environment(new TwigFileLoader($app), array(
+            'cache' => $app->info()->storagesPath() . '/twig',
             'auto_reload' => true,
         ));
     }
