@@ -18,16 +18,24 @@
  * limitations under the License.
  * ============================================================================ */
 
-use Opis\Colibri\Define;
+namespace Opis\Colibri\ModuleCollector;
+
+use Opis\Colibri\ModuleCollector;
 use Opis\Colibri\Module\Twig\TwigEngine;
- 
-Define::ViewEngines(function($engine){
-    
-    $engine->register(function(){
-        return new TwigEngine();
-    })
-    ->handle(function($path){
-        return preg_match('/^.*\.twig$/', $path);
-    });
-    
-});
+
+class Twig extends ModuleCollector
+{
+
+    /**
+     * Collect view engines
+     */
+    public function viewEngines($engine, $app)
+    {
+        $engine->register(function($app) {
+            return new TwigEngine($app);
+        })
+        ->handle(function($path) {
+            return preg_match('/^.*\.twig$/', $path);
+        });
+    }
+}

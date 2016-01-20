@@ -20,11 +20,12 @@
 
 namespace Opis\Colibri\ModuleInstaller;
 
+use Opis\Colibri\Application;
 use Opis\Colibri\ModuleInstaller;
 
 class Twig extends ModuleInstaller
 {    
-    public function uninstall()
+    public function uninstall(Application $app)
     {
         $rmdir = function($path) use(&$rmdir){
             
@@ -46,6 +47,6 @@ class Twig extends ModuleInstaller
             return false;
         };
         
-        $rmdir(COLIBRI_STORAGES_PATH . '/twig');
+        $rmdir($app->info()->storagesPath() . '/twig');
     }
 }
