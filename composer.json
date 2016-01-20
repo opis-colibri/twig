@@ -12,7 +12,11 @@
         }
     ],
     "require": {
-        "twig/twig": "~1.0",
-        "opis-colibri/core": "^1.2.3"
+        "twig/twig": "~1.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
     }
 }
