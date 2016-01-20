@@ -1,5 +1,5 @@
 {
     "title": "Twig module",
     "description": "Allows you to use Twig templates inside your Opis Colibri project",
-    "source": "lib"
+    "source": "src"
 }
