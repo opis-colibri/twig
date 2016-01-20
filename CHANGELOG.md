@@ -1,5 +1,9 @@
 CHANGELOG
 -----------
+### v2.0.0
+
+* Updated module to reflect changes in `opis-colibri/core`
+
 ### v1.0.1, 2015.08.30
 
 * The `install` method was removed from the module's installer class.
