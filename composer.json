@@ -15,6 +15,11 @@
         "twig/twig": "~1.0"
     },
     "extra": {
+        "module": {
+            "title": "Twig module",
+            "description": "Allows you to use Twig templates inside your Opis Colibri project",
+            "source": "src"
+        },
         "branch-alias": {
             "dev-master": "2.0-dev"
         }
