@@ -20,7 +20,6 @@
 
 namespace Opis\Colibri\Module\Twig;
 
-use Opis\Colibri\App;
 use Twig_LoaderInterface;
 use Opis\Colibri\Application;
 
@@ -56,6 +55,6 @@ class TwigFileLoader implements Twig_LoaderInterface
             return $name;
         }
         
-        return $app->getViewRouter()->resolveViewName($name);
+        return $this->app->getViewRouter()->resolveViewName($name);
     }
 }
