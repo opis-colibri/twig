@@ -21,6 +21,8 @@
 namespace Opis\Colibri\Module\Twig;
 
 use Twig_Environment;
+use Twig_SimpleFilter;
+use Twig_SimpleFunction;
 use Opis\Colibri\Application;
 use Opis\View\EngineInterface;
 
@@ -34,8 +36,24 @@ class TwigEngine implements EngineInterface
             'cache' => $app->info()->storagesPath() . '/twig',
             'auto_reload' => true,
         ));
+
+        $this->twig->addFilter(new Twig_SimpleFilter('t', $app->getTranslator()));
+        $this->twig->addFunction(new Twig_SimpleFunction('t', $app->getTranslator()));
+
+        $this->twig->addFunction(new Twig_SimpleFunction('asset', array($app, 'asset')));
+
+        $this->twig->addFilter(new Twig_SimpleFilter('url', array($app, 'getURL')));
+        $this->twig->addFunction(new Twig_SimpleFunction('url', array($app, 'getURL')));
+
+        $this->twig->addFilter(new Twig_SimpleFilter('path', array($app, 'getPath')));
+        $this->twig->addFunction(new Twig_SimpleFunction('path', array($app, 'getPath')));
+
+        $this->twig->addFilter(new Twig_SimpleFilter('var', array($app, 'variable')));
+        $this->twig->addFunction(new Twig_SimpleFunction('var', array($app, 'variable')));
+
+        $this->twig->addFunction(new Twig_SimpleFunction('csrf', array($app, 'csrfToken')));
     }
-    
+
     public function build($path, array $data = array())
     {
         return $this->twig->render($path, $data);
