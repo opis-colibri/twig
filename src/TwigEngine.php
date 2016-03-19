@@ -52,6 +52,11 @@ class TwigEngine implements EngineInterface
         $this->twig->addFunction(new Twig_SimpleFunction('var', array($app, 'variable')));
 
         $this->twig->addFunction(new Twig_SimpleFunction('csrf', array($app, 'csrfToken')));
+
+        $safe = array('is_safe' => array('html'));
+
+        $this->twig->addFunction(new Twig_SimpleFunction('view', array($app, 'view'), $safe));
+        $this->twig->addFunction(new Twig_SimpleFunction('render', array($app->getViewRouter(), 'render'), $safe));
     }
 
     public function build($path, array $data = array())
