@@ -1,7 +1,7 @@
 {
     "name": "opis-colibri/twig",
     "type": "opis-colibri-module",
-    "description": "Twig module for Opis Colibri framework",
+    "description": "Allows you to use Twig templates inside your Opis Colibri based project",
     "keywords": ["opis", "colibri", "module", "twig module", "templating"],
     "homepage": "http://opis.io",
     "license": "Apache-2.0",
@@ -12,16 +12,31 @@
         }
     ],
     "require": {
-        "twig/twig": "~1.0"
+        "twig/twig": "~1.0",
+        "opis/colibri": "2.0.*@dev"
     },
+    "autoload": {
+        "psr-4": {
+            "OpisColibri\\Twig\\": "src/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev",
     "extra": {
-        "module": {
-            "title": "Twig module",
-            "description": "Allows you to use Twig templates inside your Opis Colibri project",
-            "source": "src"
+        "title": "Twig module",
+        "collector": {
+            "class": "OpisColibri\\Twig\\Collector",
+            "file": "src/Collector.php"
+        },
+        "installer": {
+            "class": "OpisColibri\\Twig\\Installer",
+            "file": "src/Installer.php"
         },
         "branch-alias": {
-            "dev-master": "2.0-dev"
+            "dev-master": "3.0-dev"
         }
     }
 }
