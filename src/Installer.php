@@ -18,9 +18,8 @@
  * limitations under the License.
  * ============================================================================ */
 
-namespace Opis\Colibri\ModuleInstaller;
+namespace OpisColibri\Twig;
 
-use Opis\Colibri\Application;
 use Opis\Colibri\ModuleInstaller;
 
 class Twig extends ModuleInstaller

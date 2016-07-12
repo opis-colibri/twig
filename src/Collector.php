@@ -18,10 +18,9 @@
  * limitations under the License.
  * ============================================================================ */
 
-namespace Opis\Colibri\ModuleCollector;
+namespace OpisColibri\Twig;
 
 use Opis\Colibri\ModuleCollector;
-use Opis\Colibri\Module\Twig\TwigEngine;
 
 class Twig extends ModuleCollector
 {
