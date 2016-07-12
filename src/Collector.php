@@ -20,21 +20,19 @@
 
 namespace OpisColibri\Twig;
 
+use Opis\Colibri\Collectors\ViewEngineCollector;
 use Opis\Colibri\ModuleCollector;
 
 class Twig extends ModuleCollector
 {
-
     /**
      * Collect view engines
+     * 
+     * @param ViewEngineCollector $engine
      */
-    public function viewEngines($engine, $app)
+    public function viewEngines(ViewEngineCollector $engine)
     {
-        $engine->register(function($app) {
-            return new TwigEngine($app);
-        })
-        ->handle(function($path) {
-            return preg_match('/^.*\.twig$/', $path);
-        });
+        $engine->register(TwigEngine::class . '::factory')
+               ->handle(TwigEngine::class . '::pathHandler');
     }
 }

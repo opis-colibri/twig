@@ -1,6 +1,10 @@
 CHANGELOG
------------
-### v2.0.0
+---------
+### v3.0.0-dev
+
+* Updated module to reflect changes in Opis Colibri framework
+
+### v2.0.0-dev
 
 * Updated module to reflect changes in `opis-colibri/core`
 

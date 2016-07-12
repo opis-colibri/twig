@@ -24,28 +24,24 @@ use Opis\Colibri\ModuleInstaller;
 
 class Twig extends ModuleInstaller
 {    
-    public function uninstall(Application $app)
+    public function uninstall()
     {
         $rmdir = function($path) use(&$rmdir){
-            
-            if (is_dir($path) === true)
-            {
+            if (is_dir($path) === true) {
+
                 $files = array_diff(scandir($path), array('.', '..'));
                 
-                foreach ($files as $file)
-                {
+                foreach ($files as $file) {
                     $rmdir(realpath($path) . '/' . $file);
                 }
                 
                 return rmdir($path);
-            }
-            elseif(is_file($path) === true)
-            {
+            } elseif(is_file($path) === true) {
                 return unlink($path);
             }
             return false;
         };
         
-        $rmdir($app->info()->storagesPath() . '/twig');
+        $rmdir($this->getApp()->getAppInfo()->writableDir() . '/twig');
     }
 }

@@ -24,37 +24,57 @@ use Twig_LoaderInterface;
 use Opis\Colibri\Application;
 
 class TwigFileLoader implements Twig_LoaderInterface
-{   
+{
+    /** @var Application  */
     protected  $app;
-    
+
+    /**
+     * TwigFileLoader constructor.
+     * @param Application $app
+     */
     public function __construct(Application $app)
     {
         $this->app = $app;
     }
 
-
+    /**
+     * @param string $name
+     * @return string
+     */
     public function getSource($name)
     {
         return file_get_contents($this->find($name));
     }
 
+    /**
+     * @param string $name
+     * @return string
+     */
     public function getCacheKey($name)
     {
         return md5($this->find($name));
     }
 
+    /**
+     * @param string $name
+     * @param int $time
+     * @return bool
+     */
     public function isFresh($name, $time)
     {
         return filemtime($this->find($name)) < $time;
     }
-    
-    protected function find($name)
+
+    /**
+     * @param $name
+     * @return string
+     */
+    protected function find(string $name): string
     {
-        if(file_exists($name))
-        {
+        if(file_exists($name)) {
             return $name;
         }
-        
-        return $this->app->getViewRouter()->resolveViewName($name);
+
+        return $this->app->getViewApp()->resolveViewName($name);
     }
 }
