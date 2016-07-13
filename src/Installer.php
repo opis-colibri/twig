@@ -22,7 +22,7 @@ namespace OpisColibri\Twig;
 
 use Opis\Colibri\ModuleInstaller;
 
-class Twig extends ModuleInstaller
+class Installer extends ModuleInstaller
 {    
     public function uninstall()
     {

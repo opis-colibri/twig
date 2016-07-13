@@ -23,7 +23,7 @@ namespace OpisColibri\Twig;
 use Opis\Colibri\Collectors\ViewEngineCollector;
 use Opis\Colibri\ModuleCollector;
 
-class Twig extends ModuleCollector
+class Collector extends ModuleCollector
 {
     /**
      * Collect view engines
