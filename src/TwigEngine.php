@@ -67,6 +67,16 @@ class TwigEngine implements EngineInterface
     }
 
     /**
+     * @param $viewItem
+     * @return array
+     */
+    public function defaultValues($viewItem): array
+    {
+        return [];
+    }
+
+
+    /**
      * @param string $path
      * @param array $data
      * @return string
