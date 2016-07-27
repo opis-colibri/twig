@@ -20,10 +20,11 @@
 
 namespace OpisColibri\Twig;
 
+use Opis\Colibri\Application;
+use Opis\Colibri\ViewApp;
 use Twig_Environment;
 use Twig_SimpleFilter;
 use Twig_SimpleFunction;
-use Opis\Colibri\Application;
 use Opis\View\EngineInterface;
 
 class TwigEngine implements EngineInterface
@@ -67,16 +68,6 @@ class TwigEngine implements EngineInterface
     }
 
     /**
-     * @param $viewItem
-     * @return array
-     */
-    public function defaultValues($viewItem): array
-    {
-        return [];
-    }
-
-
-    /**
      * @param string $path
      * @param array $data
      * @return string
@@ -87,12 +78,12 @@ class TwigEngine implements EngineInterface
     }
 
     /**
-     * @param Application $app
+     * @param ViewApp $viewApp
      * @return TwigEngine
      */
-    public static function factory(Application $app): self
+    public static function factory(ViewApp $viewApp): self
     {
-        return new static($app);
+        return new static($viewApp->getApp());
     }
 
     /**
