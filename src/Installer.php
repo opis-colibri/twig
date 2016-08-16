@@ -21,6 +21,9 @@
 namespace OpisColibri\Twig;
 
 use Opis\Colibri\ModuleInstaller;
+use function Opis\Colibri\Helpers\{
+    info
+};
 
 class Installer extends ModuleInstaller
 {    
@@ -42,6 +45,6 @@ class Installer extends ModuleInstaller
             return false;
         };
         
-        $rmdir($this->getApp()->getAppInfo()->writableDir() . '/twig');
+        $rmdir(info()->writableDir() . '/twig');
     }
 }
