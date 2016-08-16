@@ -21,22 +21,9 @@
 namespace OpisColibri\Twig;
 
 use Twig_LoaderInterface;
-use Opis\Colibri\Application;
 
 class TwigFileLoader implements Twig_LoaderInterface
 {
-    /** @var Application  */
-    protected  $app;
-
-    /**
-     * TwigFileLoader constructor.
-     * @param Application $app
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
-
     /**
      * @param string $name
      * @return string
@@ -75,6 +62,6 @@ class TwigFileLoader implements Twig_LoaderInterface
             return $name;
         }
 
-        return $this->app->getViewApp()->resolveViewName($name);
+        return \Opis\Colibri\Helpers\app()->getViewApp()->resolveViewName($name);
     }
 }

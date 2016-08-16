@@ -20,51 +20,51 @@
 
 namespace OpisColibri\Twig;
 
-use Opis\Colibri\Application;
-use Opis\Colibri\ViewApp;
+use Opis\View\ViewApp;
 use Twig_Environment;
 use Twig_SimpleFilter;
 use Twig_SimpleFunction;
 use Opis\View\EngineInterface;
+use function Opis\Colibri\Helpers\{
+    info
+};
 
 class TwigEngine implements EngineInterface
 {
     /** @var Twig_Environment  */
     protected $twig;
 
-    /**
-     * TwigEngine constructor.
-     * @param Application $app
-     */
-    public function __construct(Application $app)
+    public function __construct()
     {
-        $helper = $app->getHelper();
 
-        $this->twig = new Twig_Environment(new TwigFileLoader($app), [
-            'cache' => $helper->writableDir() . '/twig',
+        $this->twig = new Twig_Environment(new TwigFileLoader(), [
+            'cache' => info()->writableDir() . '/twig',
             'auto_reload' => true,
         ]);
+       
+        $ns = 'Opis\Colibri\Helpers\\';
+        
 
-        $this->twig->addFilter(new Twig_SimpleFilter('t', [$helper, 't']));
-        $this->twig->addFunction(new Twig_SimpleFunction('t', [$helper, 't']));
+        $this->twig->addFilter(new Twig_SimpleFilter('t', $ns . 't'));
+        $this->twig->addFunction(new Twig_SimpleFunction('t', $ns . 't'));
 
-        $this->twig->addFunction(new Twig_SimpleFunction('asset', [$helper, 'getAsset']));
+        $this->twig->addFunction(new Twig_SimpleFunction('asset', $ns . 'getAsset'));
 
-        $this->twig->addFilter(new Twig_SimpleFilter('url', [$helper, 'getURL']));
-        $this->twig->addFunction(new Twig_SimpleFunction('url', [$helper, 'getURL']));
+        $this->twig->addFilter(new Twig_SimpleFilter('url', $ns . 'getURL'));
+        $this->twig->addFunction(new Twig_SimpleFunction('url', $ns . 'getURL'));
 
-        $this->twig->addFilter(new Twig_SimpleFilter('v', [$helper, 'v']));
-        $this->twig->addFunction(new Twig_SimpleFunction('v', [$helper, 'v']));
+        $this->twig->addFilter(new Twig_SimpleFilter('v', $ns . 'v'));
+        $this->twig->addFunction(new Twig_SimpleFunction('v', $ns . 'v'));
 
-        $this->twig->addFilter(new Twig_SimpleFilter('r', [$helper, 'r']));
-        $this->twig->addFunction(new Twig_SimpleFunction('r', [$helper, 'r']));
+        $this->twig->addFilter(new Twig_SimpleFilter('r', $ns . 'r'));
+        $this->twig->addFunction(new Twig_SimpleFunction('r', $ns . 'r'));
 
-        $this->twig->addFunction(new Twig_SimpleFunction('csrf', [$helper, 'generateCSRFToken']));
+        $this->twig->addFunction(new Twig_SimpleFunction('csrf', $ns . 'generateCSRFToken'));
 
         $safe = ['is_safe' => ['html']];
 
-        $this->twig->addFunction(new Twig_SimpleFunction('view', [$helper, 'view'], $safe));
-        $this->twig->addFunction(new Twig_SimpleFunction('render', [$helper, 'render'], $safe));
+        $this->twig->addFunction(new Twig_SimpleFunction('view', $ns . 'view', $safe));
+        $this->twig->addFunction(new Twig_SimpleFunction('render', $ns . 'render', $safe));
     }
 
     /**
@@ -83,7 +83,7 @@ class TwigEngine implements EngineInterface
      */
     public static function factory(ViewApp $viewApp): self
     {
-        return new static($viewApp->getApp());
+        return new static();
     }
 
     /**
