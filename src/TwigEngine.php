@@ -45,7 +45,7 @@ class TwigEngine implements EngineInterface
         $this->twig->addFilter(new Twig_SimpleFilter('t', $ns . 't'));
         $this->twig->addFunction(new Twig_SimpleFunction('t', $ns . 't'));
 
-        $this->twig->addFunction(new Twig_SimpleFunction('asset', $ns . 'getAsset'));
+        $this->twig->addFunction(new Twig_SimpleFunction('asset', $ns . 'asset'));
 
         $this->twig->addFilter(new Twig_SimpleFilter('url', $ns . 'getURL'));
         $this->twig->addFunction(new Twig_SimpleFunction('url', $ns . 'getURL'));
