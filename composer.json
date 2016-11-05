@@ -26,14 +26,16 @@
     "prefer-stable": true,
     "minimum-stability": "dev",
     "extra": {
-        "title": "Twig module",
-        "collector": {
-            "class": "OpisColibri\\Twig\\Collector",
-            "file": "src/Collector.php"
-        },
-        "installer": {
-            "class": "OpisColibri\\Twig\\Installer",
-            "file": "src/Installer.php"
+        "module": {
+            "title": "Twig module",
+            "collector": {
+                "class": "OpisColibri\\Twig\\Collector",
+                "file": "src/Collector.php"
+            },
+            "installer": {
+                "class": "OpisColibri\\Twig\\Installer",
+                "file": "src/Installer.php"
+            }
         },
         "branch-alias": {
             "dev-master": "3.0-dev"
