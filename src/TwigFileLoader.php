@@ -59,6 +59,6 @@ class TwigFileLoader implements Twig_LoaderInterface
             return $name;
         }
 
-        return \Opis\Colibri\Helpers\app()->getViewApp()->resolveViewName($name);
+        return \Opis\Colibri\Functions\app()->getViewApp()->resolveViewName($name);
     }
 }

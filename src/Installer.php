@@ -18,7 +18,7 @@
 namespace OpisColibri\Twig;
 
 use Opis\Colibri\ModuleInstaller;
-use function Opis\Colibri\Helpers\{
+use function Opis\Colibri\Functions\{
     info
 };
 

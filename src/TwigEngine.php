@@ -22,7 +22,7 @@ use Twig_Environment;
 use Twig_SimpleFilter;
 use Twig_SimpleFunction;
 use Opis\View\EngineInterface;
-use function Opis\Colibri\Helpers\{
+use function Opis\Colibri\Functions\{
     info
 };
 
@@ -39,7 +39,7 @@ class TwigEngine implements EngineInterface
             'auto_reload' => true,
         ]);
        
-        $ns = 'Opis\Colibri\Helpers\\';
+        $ns = 'Opis\Colibri\Functions\\';
         
 
         $this->twig->addFilter(new Twig_SimpleFilter('t', $ns . 't'));
