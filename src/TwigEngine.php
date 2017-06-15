@@ -48,10 +48,14 @@ class TwigEngine implements EngineInterface
     {
         $collector = app()->getCollector();
 
-        /** @var array $functions */
-        $functions = $collector->collect(Collector\TwigFunctionCollector::NAME)->getList();
-        /** @var array $filters */
-        $filters = $collector->collect(Collector\TwigFilterCollector::NAME)->getList();
+        if(info()->installMode()){
+            $functions = $filters = [];
+        } else {
+            /** @var array $functions */
+            $functions = $collector->collect(Collector\TwigFunctionCollector::NAME)->getList();
+            /** @var array $filters */
+            $filters = $collector->collect(Collector\TwigFilterCollector::NAME)->getList();
+        }
 
         $ns = 'Opis\Colibri\Functions\\';
 
