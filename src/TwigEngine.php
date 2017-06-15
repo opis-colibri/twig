@@ -58,6 +58,7 @@ class TwigEngine implements EngineInterface
         $functions += [
             'asset' => ['callback' => $ns . 'asset', 'options' => []],
             'csrf' => ['callback' => $ns . 'generateCSRFToken', 'options' => []],
+            'url' => ['callback' => $ns . 'getURL', 'options' => []],
             't' => ['callback' => $ns . 't', 'options' => []],
             'r' => ['callback' => $ns . 'r', 'options' => []],
             'v' => ['callback' => $ns . 'v', 'options' => []],
@@ -69,6 +70,7 @@ class TwigEngine implements EngineInterface
             't' => ['callback' => $ns . 't', 'options' => []],
             'r' => ['callback' => $ns . 'r', 'options' => []],
             'v' => ['callback' => $ns . 'v', 'options' => []],
+            'url' => ['callback' => $ns . 'getURL', 'options' => []],
         ];
 
         foreach ($functions as $name => $item){
