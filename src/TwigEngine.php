@@ -46,11 +46,10 @@ class TwigEngine implements EngineInterface
      */
     protected function initEnvironment(Twig_Environment $twig)
     {
-        $collector = app()->getCollector();
-
         if(info()->installMode()){
             $functions = $filters = [];
         } else {
+            $collector = app()->getCollector();
             /** @var array $functions */
             $functions = $collector->collect(Collector\TwigFunctionCollector::NAME)->getList();
             /** @var array $filters */
