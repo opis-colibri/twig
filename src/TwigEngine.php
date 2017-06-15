@@ -33,7 +33,6 @@ class TwigEngine implements EngineInterface
 
     public function __construct()
     {
-
         $this->twig = new Twig_Environment(new TwigFileLoader(), [
             'cache' => info()->writableDir() . '/twig',
             'auto_reload' => true,
@@ -49,38 +48,35 @@ class TwigEngine implements EngineInterface
     {
         $collector = app()->getCollector();
 
-        // Functions
-        $functions = $collector->collect(Collector\TwigFunctionCollector::NAME);
-        foreach ($functions as $name => $f) {
-            if ($f instanceof Twig_SimpleFunction) {
-                $twig->addFunction($name, $f);
-                continue;
-            }
-            if (is_string($f)) {
-                $f = ['callback' => $f];
-            }
-            if (!is_array($f) || !isset($f['callback'])) {
-                continue;
-            }
-            $f += ['options' => []];
-            $twig->addFunction(new Twig_SimpleFunction($name, $f['callback'], $f['options']));
+        /** @var array $functions */
+        $functions = $collector->collect(Collector\TwigFunctionCollector::NAME)->getList();
+        /** @var array $filters */
+        $filters = $collector->collect(Collector\TwigFilterCollector::NAME)->getList();
+
+        $ns = 'Opis\Colibri\Functions\\';
+
+        $functions += [
+            'asset' => ['callback' => $ns . 'asset', 'options' => []],
+            'csrf' => ['callback' => $ns . 'generateCSRFToken', 'options' => []],
+            't' => ['callback' => $ns . 't', 'options' => []],
+            'r' => ['callback' => $ns . 'r', 'options' => []],
+            'v' => ['callback' => $ns . 'v', 'options' => []],
+            'view' => ['callback' => $ns . 'view', 'options' => ['is_safe' => ['html']]],
+            'render' => ['callback' => $ns . 'render', 'options' => ['is_safe' => ['html']]],
+        ];
+
+        $filters += [
+            't' => ['callback' => $ns . 't', 'options' => []],
+            'r' => ['callback' => $ns . 'r', 'options' => []],
+            'v' => ['callback' => $ns . 'v', 'options' => []],
+        ];
+
+        foreach ($functions as $name => $item){
+            $twig->addFunction(new Twig_SimpleFunction($name, $item['callback'], $item['options']));
         }
 
-        // Filters
-        $filters = $collector->collect(Collector\TwigFilterCollector::NAME);
-        foreach ($filters as $name => $f) {
-            if ($f instanceof Twig_SimpleFilter) {
-                $twig->addFilter($name, $f);
-                continue;
-            }
-            if (is_string($f)) {
-                $f = ['callback' => $f];
-            }
-            if (!is_array($f) || !isset($f['callback'])) {
-                continue;
-            }
-            $f += ['options' => []];
-            $twig->addFilter(new Twig_SimpleFilter($name, $f['callback'], $f['options']));
+        foreach ($filters as $name => $item){
+            $twig->addFilter(new Twig_SimpleFilter($name, $item['callback'], $item['options']));
         }
     }
 

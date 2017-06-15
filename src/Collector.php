@@ -32,38 +32,4 @@ class Collector extends ModuleCollector
         $engine->register(TwigEngine::class . '::factory')
                ->handle(TwigEngine::class . '::pathHandler');
     }
-
-    /**
-     * @param Collector\TwigFunctionCollector $functions
-     */
-    public function twigFunctions(Collector\TwigFunctionCollector $functions)
-    {
-        $ns = 'Opis\Colibri\Functions\\';
-        $functions->register('asset', $ns . 'asset');
-        $functions->register('csrf', $ns . 'generateCSRFToken');
-
-        $functions->register('t', $ns . 't');
-        $functions->register('r', $ns . 'r');
-        $functions->register('v', $ns . 'v');
-
-        $functions->register('view', [
-            'callback' => $ns . 'view',
-            'options' => ['is_safe' => ['html']]
-        ]);
-        $functions->register('render', [
-            'callback' => $ns . 'render',
-            'options' => ['is_safe' => ['html']]
-        ]);
-    }
-
-    /**
-     * @param Collector\TwigFilterCollector $filters
-     */
-    public function twigFilters(Collector\TwigFilterCollector $filters)
-    {
-        $ns = 'Opis\Colibri\Functions\\';
-        $filters->register('t', $ns . 't');
-        $filters->register('r', $ns . 'r');
-        $filters->register('v', $ns . 'v');
-    }
 }

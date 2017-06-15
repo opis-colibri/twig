@@ -19,6 +19,13 @@ namespace OpisColibri\Twig\Collector;
 
 use Opis\Colibri\Collector;
 
+/**
+ * Class AbstractCollector
+ * @package OpisColibri\Twig\Collector
+ *
+ * @method TwigContainer data()
+ * @property TwigContainer $dataObject
+ */
 class AbstractCollector extends Collector
 {
     /**
@@ -26,16 +33,19 @@ class AbstractCollector extends Collector
      */
     public function __construct()
     {
-        parent::__construct(new \ArrayObject());
+        parent::__construct(new TwigContainer());
     }
 
     /**
      * @param string $name
-     * @param array $value
+     * @param callable|null $callback
+     * @param array $options
+     * @return $this
      */
-    public function register(string $name, array $value)
+    public function register(string $name,callable $callback = null, array $options = [])
     {
-        $this->dataObject[$name] = $value;
+        $this->dataObject->register($name, $callback, $options);
+        return $this;
     }
 
 }
