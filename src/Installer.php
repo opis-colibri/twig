@@ -19,11 +19,29 @@ namespace OpisColibri\Twig;
 
 use Opis\Colibri\ModuleInstaller;
 use function Opis\Colibri\Functions\{
-    info
+    app, info
 };
 
 class Installer extends ModuleInstaller
-{    
+{
+
+
+    public function enable()
+    {
+        $collector = app()->getCollector();
+        $collector->register(Collector\TwigFunctionCollector::NAME, Collector\TwigFunctionCollector::class,
+            'Collect twig functions');
+        $collector->register(Collector\TwigFilterCollector::NAME, Collector\TwigFilterCollector::class,
+            'Collect twig filters');
+    }
+
+    public function disable()
+    {
+        $collector = app()->getCollector();
+        $collector->unregister(Collector\TwigFunctionCollector::NAME);
+        $collector->unregister(Collector\TwigFilterCollector::NAME);
+    }
+
     public function uninstall()
     {
         $rmdir = function($path) use(&$rmdir){

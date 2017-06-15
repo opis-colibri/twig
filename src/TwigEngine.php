@@ -23,7 +23,7 @@ use Twig_SimpleFilter;
 use Twig_SimpleFunction;
 use Opis\View\EngineInterface;
 use function Opis\Colibri\Functions\{
-    info
+    app, info
 };
 
 class TwigEngine implements EngineInterface
@@ -38,30 +38,50 @@ class TwigEngine implements EngineInterface
             'cache' => info()->writableDir() . '/twig',
             'auto_reload' => true,
         ]);
-       
-        $ns = 'Opis\Colibri\Functions\\';
-        
 
-        $this->twig->addFilter(new Twig_SimpleFilter('t', $ns . 't'));
-        $this->twig->addFunction(new Twig_SimpleFunction('t', $ns . 't'));
+        $this->initEnvironment($this->twig);
+    }
 
-        $this->twig->addFunction(new Twig_SimpleFunction('asset', $ns . 'asset'));
+    /**
+     * @param Twig_Environment $twig
+     */
+    protected function initEnvironment(Twig_Environment $twig)
+    {
+        $collector = app()->getCollector();
 
-        $this->twig->addFilter(new Twig_SimpleFilter('url', $ns . 'getURL'));
-        $this->twig->addFunction(new Twig_SimpleFunction('url', $ns . 'getURL'));
+        // Functions
+        $functions = $collector->collect(Collector\TwigFunctionCollector::NAME);
+        foreach ($functions as $name => $f) {
+            if ($f instanceof Twig_SimpleFunction) {
+                $twig->addFunction($name, $f);
+                continue;
+            }
+            if (is_string($f)) {
+                $f = ['callback' => $f];
+            }
+            if (!is_array($f) || !isset($f['callback'])) {
+                continue;
+            }
+            $f += ['options' => []];
+            $twig->addFunction(new Twig_SimpleFunction($name, $f['callback'], $f['options']));
+        }
 
-        $this->twig->addFilter(new Twig_SimpleFilter('v', $ns . 'v'));
-        $this->twig->addFunction(new Twig_SimpleFunction('v', $ns . 'v'));
-
-        $this->twig->addFilter(new Twig_SimpleFilter('r', $ns . 'r'));
-        $this->twig->addFunction(new Twig_SimpleFunction('r', $ns . 'r'));
-
-        $this->twig->addFunction(new Twig_SimpleFunction('csrf', $ns . 'generateCSRFToken'));
-
-        $safe = ['is_safe' => ['html']];
-
-        $this->twig->addFunction(new Twig_SimpleFunction('view', $ns . 'view', $safe));
-        $this->twig->addFunction(new Twig_SimpleFunction('render', $ns . 'render', $safe));
+        // Filters
+        $filters = $collector->collect(Collector\TwigFilterCollector::NAME);
+        foreach ($filters as $name => $f) {
+            if ($f instanceof Twig_SimpleFilter) {
+                $twig->addFilter($name, $f);
+                continue;
+            }
+            if (is_string($f)) {
+                $f = ['callback' => $f];
+            }
+            if (!is_array($f) || !isset($f['callback'])) {
+                continue;
+            }
+            $f += ['options' => []];
+            $twig->addFilter(new Twig_SimpleFilter($name, $f['callback'], $f['options']));
+        }
     }
 
     /**
