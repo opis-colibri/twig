@@ -17,8 +17,8 @@
 
 namespace OpisColibri\Twig;
 
-use Opis\Colibri\Collectors\ViewEngineCollector;
-use Opis\Colibri\ModuleCollector;
+use Opis\Colibri\Containers\ViewEngineCollector;
+use Opis\Colibri\Collector as ModuleCollector;
 
 class Collector extends ModuleCollector
 {
