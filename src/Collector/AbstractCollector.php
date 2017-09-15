@@ -17,7 +17,7 @@
 
 namespace OpisColibri\Twig\Collector;
 
-use Opis\Colibri\CollectingContainer;
+use Opis\Colibri\ItemCollector;
 
 /**
  * Class AbstractCollector
@@ -26,7 +26,7 @@ use Opis\Colibri\CollectingContainer;
  * @method TwigContainer data()
  * @property TwigContainer $dataObject
  */
-class AbstractCollector extends CollectingContainer
+class AbstractCollector extends ItemCollector
 {
     /**
      * @inheritDoc

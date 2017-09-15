@@ -17,12 +17,12 @@
 
 namespace OpisColibri\Twig;
 
-use Opis\Colibri\Installer as ModuleInstaller;
+use Opis\Colibri\Installer as AbstractInstaller;
 use function Opis\Colibri\Functions\{
     app, info
 };
 
-class Installer extends ModuleInstaller
+class Installer extends AbstractInstaller
 {
 
 
