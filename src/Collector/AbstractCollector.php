@@ -23,8 +23,7 @@ use Opis\Colibri\ItemCollector;
  * Class AbstractCollector
  * @package OpisColibri\Twig\Collector
  *
- * @method TwigContainer data()
- * @property TwigContainer $dataObject
+ * @property TwigContainer $data
  */
 class AbstractCollector extends ItemCollector
 {
@@ -44,8 +43,7 @@ class AbstractCollector extends ItemCollector
      */
     public function register(string $name,callable $callback = null, array $options = [])
     {
-        $this->dataObject->register($name, $callback, $options);
+        $this->data->register($name, $callback, $options);
         return $this;
     }
-
 }
