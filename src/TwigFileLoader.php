@@ -17,48 +17,101 @@
 
 namespace OpisColibri\Twig;
 
-use Twig_LoaderInterface;
+use Opis\View\ViewApp;
+use Twig\Source as TwigSource;
+use Twig\Error\LoaderError as TwigLoaderError;
+use Twig\Loader\LoaderInterface as TwigLoaderInterface;
 
-class TwigFileLoader implements Twig_LoaderInterface
+class TwigFileLoader implements TwigLoaderInterface
 {
+    /** @var ViewApp */
+    protected $viewApp;
+
+    /** @var string|null */
+    protected $root = null;
+
+    /** @var int */
+    protected $rootLen = 0;
+
     /**
-     * @param string $name
-     * @return string
+     * TwigFileLoader constructor.
+     * @param ViewApp $viewApp
+     * @param string|null $rootPath Used for cacheKey
      */
-    public function getSource($name)
+    public function __construct(ViewApp $viewApp, string $rootPath = null)
     {
-        return file_get_contents($this->find($name));
+        $this->viewApp = $viewApp;
+        if ($rootPath !== null) {
+            $this->root = trim($rootPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+            $this->rootLen = strlen($this->root);
+        }
     }
 
     /**
-     * @param string $name
-     * @return string
+     * @inheritDoc
+     */
+    public function getSourceContext($name)
+    {
+        $path = $this->find($name);
+
+        if ($path === null) {
+            throw new TwigLoaderError("View {$name} was not found");
+        }
+
+        return new TwigSource(file_get_contents($path), $name, $path);
+    }
+
+    /**
+     * @inheritDoc
      */
     public function getCacheKey($name)
     {
-        return md5($this->find($name));
+        $path = $this->find($name);
+        if ($path === null) {
+            throw new TwigLoaderError("View {$name} was not found");
+        }
+
+        // If path is a local file, strip root path
+        // In this way you can move the app to another dir, without a cache rebuild
+        if ($this->rootLen > 0 && strpos($path, $this->root) === 0) {
+            $path = substr($path, $this->rootLen);
+        }
+
+        return md5($path);
     }
 
     /**
-     * @param string $name
-     * @param int $time
-     * @return bool
+     * @inheritDoc
      */
     public function isFresh($name, $time)
     {
+        $path = $this->find($name);
+
+        if ($path === null) {
+            throw new TwigLoaderError("View {$name} was not found");
+        }
+
         return filemtime($this->find($name)) < $time;
     }
 
     /**
-     * @param $name
-     * @return string
+     * @inheritDoc
      */
-    protected function find(string $name): string
+    public function exists($name)
     {
-        if(file_exists($name)) {
+        return $this->find($name) !== null;
+    }
+
+    /**
+     * @param $name
+     * @return string|null
+     */
+    protected function find(string $name)
+    {
+        if (file_exists($name)) {
             return $name;
         }
 
-        return \Opis\Colibri\Functions\app()->getViewApp()->resolveViewName($name);
+        return $this->viewApp->resolveViewName($name);
     }
 }

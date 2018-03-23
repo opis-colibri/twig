@@ -24,8 +24,6 @@ use function Opis\Colibri\Functions\{
 
 class Installer extends AbstractInstaller
 {
-
-
     public function enable()
     {
         $collector = app()->getCollector();
@@ -33,6 +31,8 @@ class Installer extends AbstractInstaller
             'Collect twig functions');
         $collector->register(Collector\TwigFilterCollector::NAME, Collector\TwigFilterCollector::class,
             'Collect twig filters');
+        $collector->register(Collector\TwigExtensionCollector::NAME, Collector\TwigExtensionCollector::class,
+            'Collect twig extensions');
     }
 
     public function disable()
@@ -40,21 +40,22 @@ class Installer extends AbstractInstaller
         $collector = app()->getCollector();
         $collector->unregister(Collector\TwigFunctionCollector::NAME);
         $collector->unregister(Collector\TwigFilterCollector::NAME);
+        $collector->unregister(Collector\TwigExtensionCollector::NAME);
     }
 
     public function uninstall()
     {
-        $rmdir = function($path) use(&$rmdir){
-            if (is_dir($path) === true) {
+        $rmdir = function($path) use(&$rmdir) {
+            if (is_dir($path)) {
 
-                $files = array_diff(scandir($path), array('.', '..'));
+                $files = array_diff(scandir($path), ['.', '..']);
                 
                 foreach ($files as $file) {
                     $rmdir(realpath($path) . '/' . $file);
                 }
                 
                 return rmdir($path);
-            } elseif(is_file($path) === true) {
+            } elseif(is_file($path)) {
                 return unlink($path);
             }
             return false;

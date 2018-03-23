@@ -17,24 +17,35 @@
 
 namespace OpisColibri\Twig;
 
-use Opis\View\ViewApp;
-use Twig_Environment;
-use Twig_SimpleFilter;
-use Twig_SimpleFunction;
-use Opis\View\EngineInterface;
+use Twig\{
+    TwigFunction,
+    TwigFilter,
+    Environment as TwigEnvironment,
+    Extension\ExtensionInterface as TwigExtension
+};
+use Opis\View\{
+    EngineInterface, ViewApp
+};
+use Opis\Colibri\Serializable\ClassList;
 use function Opis\Colibri\Functions\{
     app, info
 };
 
 class TwigEngine implements EngineInterface
 {
-    /** @var Twig_Environment  */
+    /** @var TwigEnvironment  */
     protected $twig;
 
-    public function __construct()
+    /**
+     * TwigEngine constructor.
+     * @param ViewApp $viewApp
+     */
+    public function __construct(ViewApp $viewApp)
     {
-        $this->twig = new Twig_Environment(new TwigFileLoader(), [
-            'cache' => info()->writableDir() . '/twig',
+        $info = info();
+
+        $this->twig = new TwigEnvironment(new TwigFileLoader($viewApp, $info->rootDir()), [
+            'cache' => $info->writableDir() . '/twig',
             'auto_reload' => true,
         ]);
 
@@ -42,18 +53,29 @@ class TwigEngine implements EngineInterface
     }
 
     /**
-     * @param Twig_Environment $twig
+     * @param TwigEnvironment $twig
      */
-    protected function initEnvironment(Twig_Environment $twig)
+    protected function initEnvironment(TwigEnvironment $twig)
     {
         if(info()->installMode()){
-            $functions = $filters = [];
+            $functions = $filters = $extensions = [];
         } else {
             $collector = app()->getCollector();
+
             /** @var array $functions */
             $functions = $collector->collect(Collector\TwigFunctionCollector::NAME)->getList();
+
             /** @var array $filters */
             $filters = $collector->collect(Collector\TwigFilterCollector::NAME)->getList();
+
+            /** @var TwigExtension[] $extensions */
+            $extensions = [];
+            /** @var ClassList $items */
+            $items = $collector->collect(Collector\TwigExtensionCollector::NAME);
+            foreach ($items as $name) {
+                $extensions[] = $items->get($name);
+            }
+            unset($items);
         }
 
         $ns = 'Opis\Colibri\Functions\\';
@@ -77,11 +99,21 @@ class TwigEngine implements EngineInterface
         ];
 
         foreach ($functions as $name => $item){
-            $twig->addFunction(new Twig_SimpleFunction($name, $item['callback'], $item['options']));
+            if (empty($item['callback'])) {
+                continue;
+            }
+            $twig->addFunction(new TwigFunction($name, $item['callback'], $item['options'] ?? []));
         }
 
         foreach ($filters as $name => $item){
-            $twig->addFilter(new Twig_SimpleFilter($name, $item['callback'], $item['options']));
+            if (empty($item['callback'])) {
+                continue;
+            }
+            $twig->addFilter(new TwigFilter($name, $item['callback'], $item['options'] ?? []));
+        }
+
+        foreach ($extensions as $ext) {
+            $twig->addExtension($ext);
         }
     }
 
@@ -89,8 +121,11 @@ class TwigEngine implements EngineInterface
      * @param string $path
      * @param array $data
      * @return string
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
-    public function build(string $path, array $data = array()): string
+    public function build(string $path, array $data = []): string
     {
         return $this->twig->render($path, $data);
     }
@@ -101,7 +136,7 @@ class TwigEngine implements EngineInterface
      */
     public static function factory(ViewApp $viewApp): self
     {
-        return new static();
+        return new static($viewApp);
     }
 
     /**
@@ -110,6 +145,6 @@ class TwigEngine implements EngineInterface
      */
     public static function pathHandler(string $path): bool
     {
-        return preg_match('/^.*\.twig$/', $path);
+        return (bool)preg_match('/^.*\.twig$/', $path);
     }
 }

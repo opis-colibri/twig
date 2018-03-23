@@ -17,33 +17,26 @@
 
 namespace OpisColibri\Twig\Collector;
 
-use Opis\Colibri\ItemCollector;
+use Twig\Extension\ExtensionInterface;
+use Opis\Colibri\ItemCollectors\ClassCollector;
 
-/**
- * Class AbstractCollector
- * @package OpisColibri\Twig\Collector
- *
- * @property TwigContainer $data
- */
-class AbstractCollector extends ItemCollector
+class TwigExtensionCollector extends ClassCollector
 {
+    const NAME = 'twigExtensions';
+
     /**
      * @inheritDoc
      */
-    public function __construct()
+    protected function getClass(): string
     {
-        parent::__construct(new TwigContainer());
+        return ExtensionInterface::class;
     }
 
     /**
-     * @param string $name
-     * @param callable $callback
-     * @param array $options
-     * @return $this
+     * @inheritDoc
      */
-    public function register(string $name, callable $callback, array $options = [])
+    protected function singletonClasses(): bool
     {
-        $this->data->register($name, $callback, $options);
-        return $this;
+        return true;
     }
 }

@@ -27,10 +27,10 @@ class TwigContainer implements Serializable
 
     /**
      * @param string $name
-     * @param callable|null $callback
+     * @param callable $callback
      * @param array $options
      */
-    public function register(string $name, callable $callback = null, array $options = [])
+    public function register(string $name, callable $callback, array $options = [])
     {
         $this->data[$name] = [
             'callback' => $callback,
