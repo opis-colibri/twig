@@ -86,7 +86,6 @@ class TwigEngine implements EngineInterface
             'url' => ['callback' => $ns . 'getURL', 'options' => []],
             't' => ['callback' => $ns . 't', 'options' => []],
             'r' => ['callback' => $ns . 'r', 'options' => []],
-            'v' => ['callback' => $ns . 'v', 'options' => []],
             'view' => ['callback' => $ns . 'view', 'options' => ['is_safe' => ['html']]],
             'render' => ['callback' => $ns . 'render', 'options' => ['is_safe' => ['html']]],
         ];
@@ -94,7 +93,6 @@ class TwigEngine implements EngineInterface
         $filters += [
             't' => ['callback' => $ns . 't', 'options' => []],
             'r' => ['callback' => $ns . 'r', 'options' => []],
-            'v' => ['callback' => $ns . 'v', 'options' => []],
             'url' => ['callback' => $ns . 'getURL', 'options' => []],
         ];
 
