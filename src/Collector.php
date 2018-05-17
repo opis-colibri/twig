@@ -29,7 +29,6 @@ class Collector extends AbstractCollector
      */
     public function viewEngines(ViewEngineCollector $engine)
     {
-        $engine->register(TwigEngine::class . '::factory')
-               ->handle(TwigEngine::class . '::pathHandler');
+        $engine->register(TwigEngine::class . '::factory');
     }
 }
