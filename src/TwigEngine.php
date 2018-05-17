@@ -129,20 +129,20 @@ class TwigEngine implements IEngine
     }
 
     /**
+     * @inheritDoc
+     */
+    public function canHandle(string $path): bool
+    {
+        return (bool) preg_match('/^.*\.twig$/', $path);
+    }
+
+
+    /**
      * @param ViewRenderer $renderer
      * @return TwigEngine
      */
     public static function factory(ViewRenderer $renderer): self
     {
         return new static($renderer);
-    }
-
-    /**
-     * @param string $path
-     * @return bool
-     */
-    public static function pathHandler(string $path): bool
-    {
-        return (bool)preg_match('/^.*\.twig$/', $path);
     }
 }
