@@ -17,15 +17,15 @@
 
 namespace OpisColibri\Twig;
 
-use Opis\View\ViewApp;
+use Opis\View\ViewRenderer;
 use Twig\Source as TwigSource;
 use Twig\Error\LoaderError as TwigLoaderError;
 use Twig\Loader\LoaderInterface as TwigLoaderInterface;
 
 class TwigFileLoader implements TwigLoaderInterface
 {
-    /** @var ViewApp */
-    protected $viewApp;
+    /** @var ViewRenderer */
+    protected $renderer;
 
     /** @var string|null */
     protected $root = null;
@@ -35,12 +35,12 @@ class TwigFileLoader implements TwigLoaderInterface
 
     /**
      * TwigFileLoader constructor.
-     * @param ViewApp $viewApp
+     * @param ViewRenderer $renderer
      * @param string|null $rootPath Used for cacheKey
      */
-    public function __construct(ViewApp $viewApp, string $rootPath = null)
+    public function __construct(ViewRenderer $renderer, string $rootPath = null)
     {
-        $this->viewApp = $viewApp;
+        $this->renderer = $renderer;
         if ($rootPath !== null) {
             $this->root = trim($rootPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $this->rootLen = strlen($this->root);
@@ -112,6 +112,6 @@ class TwigFileLoader implements TwigLoaderInterface
             return $name;
         }
 
-        return $this->viewApp->resolveViewName($name);
+        return $this->renderer->resolveViewName($name);
     }
 }

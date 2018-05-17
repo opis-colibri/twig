@@ -24,27 +24,27 @@ use Twig\{
     Extension\ExtensionInterface as TwigExtension
 };
 use Opis\View\{
-    EngineInterface, ViewApp
+    IEngine, ViewRenderer
 };
 use Opis\Colibri\Serializable\ClassList;
 use function Opis\Colibri\Functions\{
     app, info
 };
 
-class TwigEngine implements EngineInterface
+class TwigEngine implements IEngine
 {
     /** @var TwigEnvironment  */
     protected $twig;
 
     /**
      * TwigEngine constructor.
-     * @param ViewApp $viewApp
+     * @param ViewRenderer $renderer
      */
-    public function __construct(ViewApp $viewApp)
+    public function __construct(ViewRenderer $renderer)
     {
         $info = info();
 
-        $this->twig = new TwigEnvironment(new TwigFileLoader($viewApp, $info->rootDir()), [
+        $this->twig = new TwigEnvironment(new TwigFileLoader($renderer, $info->rootDir()), [
             'cache' => $info->writableDir() . '/twig',
             'auto_reload' => true,
         ]);
@@ -129,12 +129,12 @@ class TwigEngine implements EngineInterface
     }
 
     /**
-     * @param ViewApp $viewApp
+     * @param ViewRenderer $renderer
      * @return TwigEngine
      */
-    public static function factory(ViewApp $viewApp): self
+    public static function factory(ViewRenderer $renderer): self
     {
-        return new static($viewApp);
+        return new static($renderer);
     }
 
     /**
