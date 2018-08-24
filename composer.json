@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "OpisColibri\\Twig\\": "src/"
+            "Opis\\Colibri\\Modules\\Twig\\": "src/"
         }
     },
     "config": {
@@ -28,14 +28,8 @@
     "extra": {
         "module": {
             "title": "Twig module",
-            "collector": {
-                "class": "OpisColibri\\Twig\\Collector",
-                "file": "src/Collector.php"
-            },
-            "installer": {
-                "class": "OpisColibri\\Twig\\Installer",
-                "file": "src/Installer.php"
-            }
+            "collector": "Opis\\Colibri\\Modules\\Twig\\Collector",
+            "installer": "Opis\\Colibri\\Modules\\Twig\\Installer"
         },
         "branch-alias": {
             "dev-master": "3.0-dev"

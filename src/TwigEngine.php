@@ -15,7 +15,7 @@
  * limitations under the License.
  * ============================================================================ */
 
-namespace OpisColibri\Twig;
+namespace Opis\Colibri\Modules\Twig;
 
 use Twig\{
     TwigFunction,

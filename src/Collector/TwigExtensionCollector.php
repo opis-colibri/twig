@@ -15,7 +15,7 @@
  * limitations under the License.
  * ============================================================================ */
 
-namespace OpisColibri\Twig\Collector;
+namespace Opis\Colibri\Modules\Twig\Collector;
 
 use Twig\Extension\ExtensionInterface;
 use Opis\Colibri\ItemCollectors\ClassCollector;

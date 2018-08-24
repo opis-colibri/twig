@@ -15,7 +15,7 @@
  * limitations under the License.
  * ============================================================================ */
 
-namespace OpisColibri\Twig;
+namespace Opis\Colibri\Modules\Twig;
 
 use Opis\View\ViewRenderer;
 use Twig\Source as TwigSource;
