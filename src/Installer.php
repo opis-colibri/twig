@@ -21,46 +21,49 @@ use Opis\Colibri\Installer as AbstractInstaller;
 use function Opis\Colibri\Functions\{
     app, info
 };
+use Opis\Colibri\Modules\Twig\Collector\{
+    TwigFunctionCollector, TwigExtensionCollector, TwigFilterCollector
+};
 
 class Installer extends AbstractInstaller
 {
     public function enable()
     {
         $collector = app()->getCollector();
-        $collector->register(Collector\TwigFunctionCollector::NAME, Collector\TwigFunctionCollector::class,
+        $collector->register(TwigFunctionCollector::NAME, TwigFunctionCollector::class,
             'Collect twig functions');
-        $collector->register(Collector\TwigFilterCollector::NAME, Collector\TwigFilterCollector::class,
+        $collector->register(TwigFilterCollector::NAME, TwigFilterCollector::class,
             'Collect twig filters');
-        $collector->register(Collector\TwigExtensionCollector::NAME, Collector\TwigExtensionCollector::class,
+        $collector->register(TwigExtensionCollector::NAME, TwigExtensionCollector::class,
             'Collect twig extensions');
     }
 
     public function disable()
     {
         $collector = app()->getCollector();
-        $collector->unregister(Collector\TwigFunctionCollector::NAME);
-        $collector->unregister(Collector\TwigFilterCollector::NAME);
-        $collector->unregister(Collector\TwigExtensionCollector::NAME);
+        $collector->unregister(TwigFunctionCollector::NAME);
+        $collector->unregister(TwigFilterCollector::NAME);
+        $collector->unregister(TwigExtensionCollector::NAME);
     }
 
     public function uninstall()
     {
-        $rmdir = function($path) use(&$rmdir) {
+        $rmdir = function ($path) use (&$rmdir) {
             if (is_dir($path)) {
 
                 $files = array_diff(scandir($path), ['.', '..']);
-                
+
                 foreach ($files as $file) {
                     $rmdir(realpath($path) . '/' . $file);
                 }
-                
+
                 return rmdir($path);
-            } elseif(is_file($path)) {
+            } elseif (is_file($path)) {
                 return unlink($path);
             }
             return false;
         };
-        
+
         $rmdir(info()->writableDir() . '/twig');
     }
 }
