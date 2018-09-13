@@ -19,5 +19,5 @@ namespace Opis\Colibri\Modules\Twig\Collector;
 
 class TwigFilterCollector extends AbstractCollector
 {
-    const NAME = 'twigFilters';
+    const NAME = 'twig-filters';
 }

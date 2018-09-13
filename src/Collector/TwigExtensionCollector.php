@@ -22,7 +22,7 @@ use Opis\Colibri\ItemCollectors\ClassCollector;
 
 class TwigExtensionCollector extends ClassCollector
 {
-    const NAME = 'twigExtensions';
+    const NAME = 'twig-extensions';
 
     /**
      * @inheritDoc
