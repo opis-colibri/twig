@@ -108,7 +108,7 @@ class TwigFileLoader implements TwigLoaderInterface
      */
     protected function find(string $name)
     {
-        if (file_exists($name)) {
+        if (is_file($name)) {
             return $name;
         }
 
