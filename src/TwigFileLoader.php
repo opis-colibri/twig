@@ -91,7 +91,7 @@ class TwigFileLoader implements TwigLoaderInterface
             throw new TwigLoaderError("View {$name} was not found");
         }
 
-        return filemtime($this->find($name)) < $time;
+        return filemtime($path) < $time;
     }
 
     /**
