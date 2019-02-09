@@ -33,24 +33,15 @@ use function Opis\Colibri\Functions\{app, info};
 class SecureTwigEngine implements IEngine
 {
     /** @var TwigEnvironment */
-    protected $twig;
-
-    /** @var string[] */
-    protected $match;
-
-    /** @var string|null */
-    private $pattern;
+    private $twig;
 
     /**
      * SecureTwigEngine constructor.
      * @param ViewRenderer $renderer
      * @param SecurityPolicyInterface $policy
-     * @param array $match
      */
-    public function __construct(ViewRenderer $renderer, SecurityPolicyInterface $policy, array $match = ['twig-secure'])
+    public function __construct(ViewRenderer $renderer, SecurityPolicyInterface $policy)
     {
-        $this->match = $match;
-
         $info = info();
 
         $this->twig = new TwigEnvironment(new TwigFileLoader($renderer, $info->rootDir()), [
@@ -92,14 +83,7 @@ class SecureTwigEngine implements IEngine
      */
     public function canHandle(string $path): bool
     {
-        if ($this->pattern === null) {
-            $extensions = array_map(function(string $value){
-                return preg_quote($value, '/');
-            }, $this->match);
-            $this->pattern = '/^.*\.(' . implode('|', $extensions) . ')$';
-        }
-
-        return preg_match($this->pattern, $path);
+        return preg_match('/^.*\.twig\-secure$/', $path);
     }
 
     /**
