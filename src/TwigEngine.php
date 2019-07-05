@@ -78,7 +78,7 @@ class TwigEngine implements IEngine
             unset($items);
         }
 
-        $ns = 'Opis\Colibri\Functions\\';
+        $ns = '\Opis\Colibri\Functions\\';
 
         $functions += [
             'asset' => ['callback' => $ns . 'asset', 'options' => []],
@@ -93,7 +93,7 @@ class TwigEngine implements IEngine
         $filters += [
             't' => ['callback' => $ns . 't', 'options' => []],
             'r' => ['callback' => $ns . 'r', 'options' => []],
-            'url' => ['callback' => $ns . 'getURL', 'options' => []],
+            'url' => ['callback' => $ns . 'getURI', 'options' => []],
         ];
 
         foreach ($functions as $name => $item){

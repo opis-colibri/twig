@@ -1,0 +1,5 @@
+{% if escape %}
+{{ content }}
+{% else %}
+{{ content | raw }}
+{% endif %}
