@@ -17,7 +17,7 @@
     ],
     "require": {
         "twig/twig": "~2.0",
-        "opis/colibri": "2.0.x-dev"
+        "opis-colibri/core": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0"
@@ -44,7 +44,7 @@
             "installer": "Opis\\Colibri\\Modules\\Twig\\Installer"
         },
         "branch-alias": {
-            "dev-master": "3.0-dev"
+            "dev-master": "1.0-dev"
         }
     }
 }
