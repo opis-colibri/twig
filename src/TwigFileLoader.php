@@ -45,7 +45,7 @@ class TwigFileLoader implements TwigLoaderInterface
     /**
      * @inheritDoc
      */
-    public function getSourceContext($name)
+    public function getSourceContext(string $name): TwigSource
     {
         $path = $this->find($name);
 
@@ -59,7 +59,7 @@ class TwigFileLoader implements TwigLoaderInterface
     /**
      * @inheritDoc
      */
-    public function getCacheKey($name)
+    public function getCacheKey(string $name): string
     {
         $path = $this->find($name);
         if ($path === null) {
@@ -78,7 +78,7 @@ class TwigFileLoader implements TwigLoaderInterface
     /**
      * @inheritDoc
      */
-    public function isFresh($name, $time)
+    public function isFresh(string $name, int $time): bool
     {
         $path = $this->find($name);
 
@@ -92,7 +92,7 @@ class TwigFileLoader implements TwigLoaderInterface
     /**
      * @inheritDoc
      */
-    public function exists($name)
+    public function exists(string $name): bool
     {
         return $this->find($name) !== null;
     }
@@ -101,7 +101,7 @@ class TwigFileLoader implements TwigLoaderInterface
      * @param $name
      * @return string|null
      */
-    protected function find(string $name)
+    protected function find(string $name): ?string
     {
         if (file_exists($name)) {
             return $name;
