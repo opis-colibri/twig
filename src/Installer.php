@@ -1,6 +1,6 @@
 <?php
 /* ===========================================================================
- * Copyright 2018 Zindex Software
+ * Copyright 2018-2020 Zindex Software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,53 +17,33 @@
 
 namespace Opis\Colibri\Modules\Twig;
 
+use Opis\Utils\Dir;
 use Opis\Colibri\Installer as AbstractInstaller;
-use function Opis\Colibri\Functions\{
-    app, info
-};
 use Opis\Colibri\Modules\Twig\Collector\{
     TwigFunctionCollector, TwigExtensionCollector, TwigFilterCollector
 };
+use function Opis\Colibri\{app, info};
 
 class Installer extends AbstractInstaller
 {
     public function enable()
     {
-        $collector = app()->getCollector();
-        $collector->register(TwigFunctionCollector::NAME, TwigFunctionCollector::class,
-            'Collect twig functions');
-        $collector->register(TwigFilterCollector::NAME, TwigFilterCollector::class,
-            'Collect twig filters');
-        $collector->register(TwigExtensionCollector::NAME, TwigExtensionCollector::class,
-            'Collect twig extensions');
+        app()->getCollector()
+            ->register(TwigFunctionCollector::class, 'Collect twig functions')
+            ->register(TwigFilterCollector::class, 'Collect twig filters')
+            ->register(TwigExtensionCollector::class, 'Collect twig extensions');
     }
 
     public function disable()
     {
-        $collector = app()->getCollector();
-        $collector->unregister(TwigFunctionCollector::NAME);
-        $collector->unregister(TwigFilterCollector::NAME);
-        $collector->unregister(TwigExtensionCollector::NAME);
+        app()->getCollector()
+            ->unregister(TwigFunctionCollector::class)
+            ->unregister(TwigFilterCollector::class)
+            ->unregister(TwigExtensionCollector::class);
     }
 
     public function uninstall()
     {
-        $rmdir = function ($path) use (&$rmdir) {
-            if (is_dir($path)) {
-
-                $files = array_diff(scandir($path), ['.', '..']);
-
-                foreach ($files as $file) {
-                    $rmdir(realpath($path) . '/' . $file);
-                }
-
-                return rmdir($path);
-            } elseif (is_file($path)) {
-                return unlink($path);
-            }
-            return false;
-        };
-
-        $rmdir(info()->writableDir() . '/twig');
+        Dir::remove(info()->writableDir() . '/twig');
     }
 }

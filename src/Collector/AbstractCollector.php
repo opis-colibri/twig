@@ -1,6 +1,6 @@
 <?php
 /* ===========================================================================
- * Copyright 2018 Zindex Software
+ * Copyright 2018-2020 Zindex Software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 
 namespace Opis\Colibri\Modules\Twig\Collector;
 
-use Opis\Colibri\ItemCollector;
+use Opis\Colibri\Collectors\BaseCollector;
 
 /**
  * Class AbstractCollector
@@ -25,7 +25,7 @@ use Opis\Colibri\ItemCollector;
  *
  * @property TwigContainer $data
  */
-class AbstractCollector extends ItemCollector
+class AbstractCollector extends BaseCollector
 {
     /**
      * @inheritDoc
@@ -41,7 +41,7 @@ class AbstractCollector extends ItemCollector
      * @param array $options
      * @return $this
      */
-    public function register(string $name, callable $callback, array $options = [])
+    public function register(string $name, callable $callback, array $options = []): self
     {
         $this->data->register($name, $callback, $options);
         return $this;

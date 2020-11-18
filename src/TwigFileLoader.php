@@ -1,6 +1,6 @@
 <?php
 /* ===========================================================================
- * Copyright 2018 Zindex Software
+ * Copyright 2018-2020 Zindex Software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,28 +17,23 @@
 
 namespace Opis\Colibri\Modules\Twig;
 
-use Opis\View\ViewRenderer;
+use Opis\View\Renderer;
 use Twig\Source as TwigSource;
 use Twig\Error\LoaderError as TwigLoaderError;
 use Twig\Loader\LoaderInterface as TwigLoaderInterface;
 
 class TwigFileLoader implements TwigLoaderInterface
 {
-    /** @var ViewRenderer */
-    protected $renderer;
-
-    /** @var string|null */
-    protected $root = null;
-
-    /** @var int */
-    protected $rootLen = 0;
+    protected Renderer $renderer;
+    protected ?string $root = null;
+    protected int $rootLen = 0;
 
     /**
      * TwigFileLoader constructor.
-     * @param ViewRenderer $renderer
+     * @param Renderer $renderer
      * @param string|null $rootPath Used for cacheKey
      */
-    public function __construct(ViewRenderer $renderer, string $rootPath = null)
+    public function __construct(Renderer $renderer, ?string $rootPath = null)
     {
         $this->renderer = $renderer;
         if ($rootPath !== null) {

@@ -18,12 +18,10 @@
 namespace Opis\Colibri\Modules\Twig\Collector;
 
 use Twig\Extension\ExtensionInterface;
-use Opis\Colibri\ItemCollectors\ClassCollector;
+use Opis\Colibri\Collectors\ClassCollector;
 
 class TwigExtensionCollector extends ClassCollector
 {
-    const NAME = 'twig-extensions';
-
     /**
      * @inheritDoc
      */

@@ -17,7 +17,7 @@
 
 namespace Opis\Colibri\Modules\Twig\Test;
 
-use function Opis\Colibri\Functions\view as v;
+use function Opis\Colibri\view as v;
 
 class RenderTest extends BaseClass
 {

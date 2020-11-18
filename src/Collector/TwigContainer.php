@@ -1,6 +1,6 @@
 <?php
 /* ===========================================================================
- * Copyright 2018 Zindex Software
+ * Copyright 2018-2020 Zindex Software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,69 +17,39 @@
 
 namespace Opis\Colibri\Modules\Twig\Collector;
 
-use Opis\Closure\SerializableClosure;
-use Serializable;
-
-class TwigContainer implements Serializable
+class TwigContainer
 {
-    /** @var array */
-    protected $data = [];
+
+    protected array $data = [];
 
     /**
      * @param string $name
      * @param callable $callback
      * @param array $options
+     * @return $this
      */
-    public function register(string $name, callable $callback, array $options = [])
+    public function register(string $name, callable $callback, array $options = []): self
     {
         $this->data[$name] = [
             'callback' => $callback,
             'options' => $options
         ];
+
+        return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getList(): array
     {
         return $this->data;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function serialize()
+    public function __serialize(): array
     {
-        SerializableClosure::enterContext();
-
-        $data = $this->data;
-
-        foreach ($data as &$value){
-            if($value['callback'] instanceof \Closure){
-                $value['callback'] = SerializableClosure::from($value['callback']);
-            }
-        }
-
-        $data = serialize($data);
-
-        SerializableClosure::exitContext();
-
-        return $data;
+        return $this->data;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function unserialize($serialized)
+    public function __unserialize(array $data): void
     {
-        $data = unserialize($serialized);
-        foreach ($data as &$value){
-            if($value['callback'] instanceof SerializableClosure){
-                $value['callback'] = $value['callback']->getClosure();
-            }
-        }
         $this->data = $data;
     }
-
 }

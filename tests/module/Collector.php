@@ -1,6 +1,6 @@
 <?php
 /* ============================================================================
- * Copyright 2018 Zindex Software
+ * Copyright 2018-2020 Zindex Software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 namespace Test\Twig;
 
 use Opis\Colibri\Collector as BaseCollector;
-use Opis\Colibri\ItemCollectors\{TranslationCollector, ViewCollector};
+use Opis\Colibri\Collectors\{TranslationCollector, ViewCollector};
 use Opis\Colibri\Modules\Twig\Collector\{TwigFilterCollector, TwigFunctionCollector};
 
 class Collector extends BaseCollector
@@ -28,7 +28,7 @@ class Collector extends BaseCollector
      */
     public function views(ViewCollector $view)
     {
-        $view->handle('{name}.twig', function ($name) {
+        $view->handle('{name}.twig', static function ($name) {
             return __DIR__ . "/../views/{$name}.twig";
         });
     }
@@ -48,7 +48,7 @@ class Collector extends BaseCollector
      */
     public function twigFilters(TwigFilterCollector $filter)
     {
-        $filter->register('myFilter', function ($value) {
+        $filter->register('myFilter', static function ($value) {
            return 'filtered:' . $value;
         });
     }
@@ -58,7 +58,7 @@ class Collector extends BaseCollector
      */
     public function twigFunctions(TwigFunctionCollector $func)
     {
-        $func->register('sum_numbers', function ($a, $b) {
+        $func->register('sum_numbers', static function ($a, $b) {
             return $a + $b;
         });
     }
