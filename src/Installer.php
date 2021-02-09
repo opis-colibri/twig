@@ -1,6 +1,6 @@
 <?php
 /* ===========================================================================
- * Copyright 2018-2020 Zindex Software
+ * Copyright 2018-2021 Zindex Software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,33 +17,28 @@
 
 namespace Opis\Colibri\Modules\Twig;
 
-use Opis\Utils\Dir;
+use Opis\Colibri\Utils\FileSystem;
 use Opis\Colibri\Installer as AbstractInstaller;
-use Opis\Colibri\Modules\Twig\Collector\{
-    TwigFunctionCollector, TwigExtensionCollector, TwigFilterCollector
-};
-use function Opis\Colibri\{app, info};
+use function Opis\Colibri\{info, registerCollector, unregisterCollector};
 
 class Installer extends AbstractInstaller
 {
     public function enable()
     {
-        app()->getCollector()
-            ->register(TwigFunctionCollector::class, 'Collect twig functions')
-            ->register(TwigFilterCollector::class, 'Collect twig filters')
-            ->register(TwigExtensionCollector::class, 'Collect twig extensions');
+        registerCollector(Collector\TwigFunctionCollector::class, 'Collect twig functions');
+        registerCollector(Collector\TwigFilterCollector::class, 'Collect twig filters');
+        registerCollector(Collector\TwigExtensionCollector::class, 'Collect twig extensions');
     }
 
     public function disable()
     {
-        app()->getCollector()
-            ->unregister(TwigFunctionCollector::class)
-            ->unregister(TwigFilterCollector::class)
-            ->unregister(TwigExtensionCollector::class);
+        unregisterCollector(Collector\TwigFunctionCollector::class);
+        unregisterCollector(Collector\TwigFilterCollector::class);
+        unregisterCollector(Collector\TwigExtensionCollector::class);
     }
 
     public function uninstall()
     {
-        Dir::remove(info()->writableDir() . '/twig');
+        FileSystem::remove(info()->writableDir() . '/twig');
     }
 }

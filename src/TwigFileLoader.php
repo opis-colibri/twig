@@ -1,6 +1,6 @@
 <?php
 /* ===========================================================================
- * Copyright 2018-2020 Zindex Software
+ * Copyright 2018-2021 Zindex Software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 
 namespace Opis\Colibri\Modules\Twig;
 
-use Opis\View\Renderer;
 use Twig\Source as TwigSource;
+use Opis\Colibri\Render\Renderer;
 use Twig\Error\LoaderError as TwigLoaderError;
 use Twig\Loader\LoaderInterface as TwigLoaderInterface;
 
@@ -28,16 +28,11 @@ class TwigFileLoader implements TwigLoaderInterface
     protected ?string $root = null;
     protected int $rootLen = 0;
 
-    /**
-     * TwigFileLoader constructor.
-     * @param Renderer $renderer
-     * @param string|null $rootPath Used for cacheKey
-     */
     public function __construct(Renderer $renderer, ?string $rootPath = null)
     {
         $this->renderer = $renderer;
         if ($rootPath !== null) {
-            $this->root = trim($rootPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+            $this->root = trim($rootPath, '/') . '/';
             $this->rootLen = strlen($this->root);
         }
     }
@@ -68,7 +63,7 @@ class TwigFileLoader implements TwigLoaderInterface
 
         // If path is a local file, strip root path
         // In this way you can move the app to another dir, without a cache rebuild
-        if ($this->rootLen > 0 && strpos($path, $this->root) === 0) {
+        if ($this->rootLen > 0 && str_starts_with($path, $this->root)) {
             $path = substr($path, $this->rootLen);
         }
 

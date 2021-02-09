@@ -1,6 +1,6 @@
 <?php
 /* ===========================================================================
- * Copyright 2019-2020 Zindex Software
+ * Copyright 2019-2021 Zindex Software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,17 +18,12 @@
 namespace Opis\Colibri\Modules\Twig;
 
 use Throwable;
-use Opis\View\Renderer;
+use Opis\Colibri\Render\Renderer;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityPolicyInterface;
 
 class SecureTwigEngine extends TwigEngine
 {
-    /**
-     * SecureTwigEngine constructor.
-     * @param Renderer $renderer
-     * @param SecurityPolicyInterface $policy
-     */
     public function __construct(Renderer $renderer, SecurityPolicyInterface $policy)
     {
         parent::__construct($renderer);
@@ -43,7 +38,7 @@ class SecureTwigEngine extends TwigEngine
     {
         try {
             return $this->twig->render($path, $vars);
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             return $this->errorMessage($exception);
         }
     }

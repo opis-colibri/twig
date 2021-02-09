@@ -1,6 +1,6 @@
 <?php
 /* ===========================================================================
- * Copyright 2018-2020 Zindex Software
+ * Copyright 2018-2021 Zindex Software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 
 namespace Opis\Colibri\Modules\Twig;
 
-use Opis\View\{Engine, Renderer};
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use Twig\Environment as TwigEnvironment;
 use Twig\Extension\ExtensionInterface as TwigExtension;
+use Opis\Colibri\Render\{Renderer, Engine};
 use function Opis\Colibri\{collect, info};
 
 class TwigEngine implements Engine
@@ -29,10 +29,6 @@ class TwigEngine implements Engine
     protected TwigEnvironment $twig;
     protected string $regex;
 
-    /**
-     * TwigEngine constructor.
-     * @param Renderer $renderer
-     */
     public function __construct(Renderer $renderer)
     {
         $twig = $this->createEnvironment($renderer);
@@ -45,14 +41,6 @@ class TwigEngine implements Engine
         $this->regex = '/^.*\.twig$/';
     }
 
-    /**
-     * @param string $path
-     * @param array $data
-     * @return string
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
-     */
     public function build(string $path, array $data = []): string
     {
         return $this->twig->render($path, $data);
@@ -66,10 +54,6 @@ class TwigEngine implements Engine
         return (bool) preg_match($this->regex, $path);
     }
 
-    /**
-     * @param Renderer $renderer
-     * @return TwigEnvironment
-     */
     protected function createEnvironment(Renderer $renderer): TwigEnvironment
     {
         $info = info();
@@ -87,12 +71,14 @@ class TwigEngine implements Engine
         $items = collect(Collector\TwigFunctionCollector::class)->getList();
 
         $ns = '\Opis\Colibri\\';
+
         $items += [
             'asset' => $ns . 'asset',
             'csrf' => $ns . 'generateCSRFToken',
             'url' => $ns . 'getURI',
             't' => $ns . 't',
             'tns' => $ns . 'tns',
+            'lang' => $ns . 'lang',
             'view' => ['callback' => $ns . 'view', 'options' => ['is_safe' => ['html']]],
             'render' => ['callback' => $ns . 'render', 'options' => ['is_safe' => ['html']]],
         ];

@@ -38,11 +38,7 @@
     "prefer-stable": true,
     "minimum-stability": "dev",
     "extra": {
-        "module": {
-            "title": "Twig module",
-            "collector": "Opis\\Colibri\\Modules\\Twig\\Collector",
-            "installer": "Opis\\Colibri\\Modules\\Twig\\Installer"
-        },
+        "collector": "Opis\\Colibri\\Modules\\Twig\\Collector",
         "branch-alias": {
             "dev-master": "2020.x-dev"
         }

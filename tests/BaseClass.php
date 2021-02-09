@@ -1,6 +1,6 @@
 <?php
 /* ===========================================================================
- * Copyright 2018-2020 Zindex Software
+ * Copyright 2018-2021 Zindex Software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,12 +30,13 @@ class BaseClass extends ApplicationTestCase
 
     protected static function setupApp(ApplicationBuilder $builder): void
     {
+        // Add opis-colibri/twig module as uninstalled
         $builder->addUninstalledModuleFromPath(__DIR__ . '/../');
 
-        $builder->createInstalledTestModule('test/twig', 'Test\\Twig', __DIR__ . '/module', [
-            'collector' => 'Test\\Twig\\Collector',
-        ], ['opis-colibri/twig']);
+        // Add this module as installed
+        $builder->createInstalledTestModule('test/twig', 'Test\\Twig', __DIR__ . '/module', null, ['opis-colibri/twig']);
 
+        // Add this module as app dependency
         $builder->addDependencies('test/twig');
     }
 }

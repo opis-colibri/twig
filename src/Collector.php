@@ -1,6 +1,6 @@
 <?php
 /* ===========================================================================
- * Copyright 2018 Zindex Software
+ * Copyright 2018-2021 Zindex Software
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,14 @@
 
 namespace Opis\Colibri\Modules\Twig;
 
+use Opis\Colibri\Attributes\Module;
 use Opis\Colibri\Collector as AbstractCollector;
-use Opis\Colibri\Collectors\ViewEngineCollector;
+use Opis\Colibri\Collectors\RenderEngineCollector;
 
+#[Module('Twig', 'Enables twig templates', Installer::class)]
 class Collector extends AbstractCollector
 {
-    /**
-     * Collect view engines
-     * 
-     * @param ViewEngineCollector $engine
-     */
-    public function viewEngines(ViewEngineCollector $engine)
+    public function renderEngines(RenderEngineCollector $engine)
     {
         $engine->register(TwigEngine::class . '::factory');
     }
